@@ -1,3 +1,5 @@
-const getEmployeesMatchesAtWork = () => {
-  
+const getEmployeesMatchesAtWork = (employeesAndSchedule) => {
+
 }
+
+export default getEmployeesMatchesAtWork

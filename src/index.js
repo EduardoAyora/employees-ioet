@@ -1,10 +1,6 @@
-import { readFileSync } from "fs";
+import { readFileSync } from 'fs'
 
-const path = "data.txt";
+const path = 'data.txt'
 
-try {
-  const data = readFileSync(path, "utf8");
-  console.log("File content:", data);
-} catch (err) {
-  console.error(err);
-}
+const employeesAndSchedule = readFileSync(path, 'utf8')
+console.log(employeesAndSchedule)
