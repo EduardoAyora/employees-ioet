@@ -35,3 +35,5 @@ My solution has been to first read the text file and put each line (or data set)
 
 
 ## Approach and methodology
+
+My approach is that the information should first be put into a data structure that is easier to work with and represents the employees. And then, the possible combinations of these employees must be made, at the same time as their work schedules are accessed to count the number of times they have coincided. To verify that they match, I convert the hours and minutes to just minutes to make it easier.
