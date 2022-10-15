@@ -32,7 +32,7 @@ My solution has been to first read the text file and put each line (or data set)
 
 ## Architecture
 
-
+The application starts in index.js by calling the getEmployeesMatchesAtWork function found in the get-employees-matches-at-work.js module, and passes the text extracted from the file system (This function is the interface since index.js only knows about it). The getEmployeesMatchesAtWork function calls many other functions within the same module that specialize in solving smaller parts of the algorithm, and also uses the Employee class to instantiate employee objects since the functions work with these data structures and not with the original strings.
 
 ## Approach and methodology
 
