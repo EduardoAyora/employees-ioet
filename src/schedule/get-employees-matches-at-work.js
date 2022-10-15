@@ -6,29 +6,23 @@ const getEmployeesMatchesAtWork = (employeesAndScheduleString) => {
   const employeesAndSchedule = employeesAndScheduleArrayOfStrings.map(
     (employeeAndScheduleString) => new Employee(employeeAndScheduleString)
   )
-  const employeesMatches = employeesAndSchedule.reduce(
-    (employeePairs, employeeA, index) =>
-      employeePairs.concat(
-        employeesAndSchedule.slice(index + 1).map((employeeB) => {
-          const numberOfMatchesInThePair = employeeA.workedSchedule.reduce(
-            (numberOfCoincidences, dayScheduleEmployeeA) => {
-              const dayScheduleEmployeeB = employeeB.workedSchedule.find(
-                ({ day }) => day === dayScheduleEmployeeA.day
-              )
-              if (!dayScheduleEmployeeB) return numberOfCoincidences
-              if (isMatchInTime(dayScheduleEmployeeA, dayScheduleEmployeeB))
-                return numberOfCoincidences + 1
-              else return numberOfCoincidences
-            },
-            0
-          )
-          return `${employeeA.name}-${employeeB.name}: ${numberOfMatchesInThePair}`
-        })
-      ),
-    []
-  )
-  console.log(employeesMatches)
-  return employeesMatches
+  const allEmployeesCombinationsWithNumberOfMatches =
+    employeesAndSchedule.reduce(
+      (employeePairs, employeeA, index) =>
+        employeePairs.concat(
+          employeesAndSchedule.slice(index + 1).map((employeeB) => {
+            const numberOfMatchesInThePair = getCountOfMatches(
+              employeeA.workedSchedule,
+              employeeB.workedSchedule
+            )
+            return `${employeeA.name}-${employeeB.name}: ${numberOfMatchesInThePair}`
+          })
+        ),
+      []
+    )
+  const allEmployeesCombinationsWithNumberOfMatchesString =
+    allEmployeesCombinationsWithNumberOfMatches.join('\n')
+  return allEmployeesCombinationsWithNumberOfMatchesString
 }
 
 const getEmployeesAndScheduleArrayOfStrings = (employeesAndScheduleString) => {
@@ -37,7 +31,26 @@ const getEmployeesAndScheduleArrayOfStrings = (employeesAndScheduleString) => {
     .map((employeeAndScheduleString) => employeeAndScheduleString.trim())
 }
 
-const isMatchInTime = (dayScheduleEmployeeA, dayScheduleEmployeeB) => {
+const getCountOfMatches = (
+  workedScheduleEmployeeA,
+  workedScheduleEmployeeB
+) => {
+  const numberOfMatches = workedScheduleEmployeeA.reduce(
+    (numberOfCoincidences, dayScheduleEmployeeA) => {
+      const dayScheduleEmployeeB = workedScheduleEmployeeB.find(
+        ({ day }) => day === dayScheduleEmployeeA.day
+      )
+      if (!dayScheduleEmployeeB) return numberOfCoincidences
+      if (isMatchInTimes(dayScheduleEmployeeA, dayScheduleEmployeeB))
+        return numberOfCoincidences + 1
+      else return numberOfCoincidences
+    },
+    0
+  )
+  return numberOfMatches
+}
+
+const isMatchInTimes = (dayScheduleEmployeeA, dayScheduleEmployeeB) => {
   const employeeAStartHour = dayScheduleEmployeeA.startHour
   const employeeAStartMinute = dayScheduleEmployeeA.startMinute
   const employeeAEndHour = dayScheduleEmployeeA.endHour
@@ -48,23 +61,23 @@ const isMatchInTime = (dayScheduleEmployeeA, dayScheduleEmployeeB) => {
   const employeeBEndMinute = dayScheduleEmployeeB.endMinute
 
   if (
-    employeeAStartHour > employeeBStartHour &&
-    employeeAStartHour < employeeBEndHour
+    employeeAStartHour >= employeeBStartHour &&
+    employeeAStartHour <= employeeBEndHour
   )
     return true
   if (
-    employeeAEndHour > employeeBStartHour &&
-    employeeAEndHour < employeeBEndHour
+    employeeAEndHour >= employeeBStartHour &&
+    employeeAEndHour <= employeeBEndHour
   )
     return true
   if (
-    employeeBStartHour > employeeAStartHour &&
-    employeeBStartHour < employeeAEndHour
+    employeeBStartHour >= employeeAStartHour &&
+    employeeBStartHour <= employeeAEndHour
   )
     return true
   if (
-    employeeBEndHour > employeeAStartHour &&
-    employeeBEndHour < employeeAEndHour
+    employeeBEndHour >= employeeAStartHour &&
+    employeeBEndHour <= employeeAEndHour
   )
     return true
   return false
@@ -73,4 +86,5 @@ const isMatchInTime = (dayScheduleEmployeeA, dayScheduleEmployeeB) => {
 exports.getEmployeesMatchesAtWork = getEmployeesMatchesAtWork
 exports.getEmployeesAndScheduleArrayOfStrings =
   getEmployeesAndScheduleArrayOfStrings
-exports.isMatchInTime = isMatchInTime
+exports.isMatchInTimes = isMatchInTimes
+exports.getCountOfMatches = getCountOfMatches

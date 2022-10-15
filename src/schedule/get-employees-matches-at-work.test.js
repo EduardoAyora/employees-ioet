@@ -1,7 +1,8 @@
 const {
   getEmployeesMatchesAtWork,
   getEmployeesAndScheduleArrayOfStrings,
-  isMatchInTime,
+  isMatchInTimes,
+  getCountOfMatches,
 } = require('./get-employees-matches-at-work')
 
 describe('getEmployeesMatchesAtWork', () => {
@@ -11,9 +12,7 @@ describe('getEmployeesMatchesAtWork', () => {
     ANDRES=MO10:00-12:00,TH12:00-14:00,SU20:00-21:00`
 
     expect(getEmployeesMatchesAtWork(employeesAndScheduleString))
-      .toBe(`ASTRID-RENE: 2
-    ASTRID-ANDRES: 3
-    RENE-ANDRES: 2`)
+      .toBe(`RENE-ASTRID: 2\nRENE-ANDRES: 2\nASTRID-ANDRES: 3`)
   })
 
   test('Should return RENE-ASTRID: 3', () => {
@@ -40,10 +39,141 @@ describe('getEmployeesAndScheduleArrayOfStrings', () => {
   })
 })
 
-describe('isMatchInTime', () => {
+describe('getCountOfMatches', () => {
+  test('Should return 3', () => {
+    expect(
+      getCountOfMatches(
+        [
+          {
+            day: 'MO',
+            startHour: 10,
+            startMinute: 0,
+            endHour: 12,
+            endMinute: 0,
+          },
+          {
+            day: 'TH',
+            startHour: 12,
+            startMinute: 0,
+            endHour: 14,
+            endMinute: 0,
+          },
+          {
+            day: 'SU',
+            startHour: 20,
+            startMinute: 0,
+            endHour: 21,
+            endMinute: 0,
+          },
+        ],
+        [
+          {
+            day: 'MO',
+            startHour: 10,
+            startMinute: 0,
+            endHour: 12,
+            endMinute: 0,
+          },
+          {
+            day: 'TH',
+            startHour: 12,
+            startMinute: 0,
+            endHour: 14,
+            endMinute: 0,
+          },
+          {
+            day: 'SU',
+            startHour: 20,
+            startMinute: 0,
+            endHour: 21,
+            endMinute: 0,
+          },
+        ]
+      )
+    ).toBe(3)
+  })
+  test('Should return 0', () => {
+    expect(
+      getCountOfMatches(
+        [
+          {
+            day: 'MO',
+            startHour: 10,
+            startMinute: 0,
+            endHour: 12,
+            endMinute: 0,
+          },
+        ],
+        [
+          {
+            day: 'MO',
+            startHour: 13,
+            startMinute: 0,
+            endHour: 17,
+            endMinute: 0,
+          },
+        ]
+      )
+    ).toBe(0)
+  })
+  test('Should return 1', () => {
+    expect(
+      getCountOfMatches(
+        [
+          {
+            day: 'TU',
+            startHour: 10,
+            startMinute: 0,
+            endHour: 12,
+            endMinute: 0,
+          },
+          {
+            day: 'TH',
+            startHour: 1,
+            startMinute: 0,
+            endHour: 3,
+            endMinute: 0,
+          },
+          {
+            day: 'SA',
+            startHour: 14,
+            startMinute: 0,
+            endHour: 18,
+            endMinute: 0,
+          },
+          {
+            day: 'SU',
+            startHour: 20,
+            startMinute: 0,
+            endHour: 21,
+            endMinute: 0,
+          },
+        ],
+        [
+          {
+            day: 'TH',
+            startHour: 12,
+            startMinute: 0,
+            endHour: 14,
+            endMinute: 0,
+          },
+          {
+            day: 'SU',
+            startHour: 19,
+            startMinute: 0,
+            endHour: 21,
+            endMinute: 0,
+          },
+        ]
+      )
+    ).toBe(1)
+  })
+})
+
+describe('isMatchInTimes', () => {
   test('Should return true', () => {
     expect(
-      isMatchInTime(
+      isMatchInTimes(
         { startHour: 10, startMinute: 0, endHour: 12, endMinute: 0 },
         { startHour: 11, startMinute: 0, endHour: 13, endMinute: 0 }
       )
@@ -51,7 +181,7 @@ describe('isMatchInTime', () => {
   })
   test('Should return true', () => {
     expect(
-      isMatchInTime(
+      isMatchInTimes(
         { startHour: 10, startMinute: 0, endHour: 12, endMinute: 0 },
         { startHour: 7, startMinute: 0, endHour: 11, endMinute: 0 }
       )
@@ -59,7 +189,7 @@ describe('isMatchInTime', () => {
   })
   test('Should return true', () => {
     expect(
-      isMatchInTime(
+      isMatchInTimes(
         { startHour: 9, startMinute: 0, endHour: 10, endMinute: 0 },
         { startHour: 8, startMinute: 0, endHour: 15, endMinute: 0 }
       )
@@ -67,7 +197,7 @@ describe('isMatchInTime', () => {
   })
   test('Should return true', () => {
     expect(
-      isMatchInTime(
+      isMatchInTimes(
         { startHour: 12, startMinute: 0, endHour: 18, endMinute: 0 },
         { startHour: 14, startMinute: 0, endHour: 15, endMinute: 0 }
       )
@@ -75,7 +205,7 @@ describe('isMatchInTime', () => {
   })
   test('Should return false', () => {
     expect(
-      isMatchInTime(
+      isMatchInTimes(
         { startHour: 10, startMinute: 0, endHour: 14, endMinute: 0 },
         { startHour: 15, startMinute: 0, endHour: 18, endMinute: 0 }
       )
@@ -83,7 +213,7 @@ describe('isMatchInTime', () => {
   })
   test('Should return false', () => {
     expect(
-      isMatchInTime(
+      isMatchInTimes(
         { startHour: 14, startMinute: 0, endHour: 16, endMinute: 0 },
         { startHour: 1, startMinute: 0, endHour: 2, endMinute: 0 }
       )
