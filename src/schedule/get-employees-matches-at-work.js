@@ -6,22 +6,10 @@ const getEmployeesMatchesAtWork = (employeesAndScheduleString) => {
   const employeesAndSchedule = employeesAndScheduleArrayOfStrings.map(
     (employeeAndScheduleString) => new Employee(employeeAndScheduleString)
   )
-  const allEmployeesCombinationsWithNumberOfMatches =
-    employeesAndSchedule.reduce(
-      (employeePairs, employeeA, index) =>
-        employeePairs.concat(
-          employeesAndSchedule.slice(index + 1).map((employeeB) => {
-            const numberOfMatchesInThePair = getCountOfMatches(
-              employeeA.workedSchedule,
-              employeeB.workedSchedule
-            )
-            return `${employeeA.name}-${employeeB.name}: ${numberOfMatchesInThePair}`
-          })
-        ),
-      []
-    )
+  const allEmployeesCombinationsWithNumberOfMatchesArray =
+    getAllEmployeesCombinationsWithNumberOfMatches(employeesAndSchedule)
   const allEmployeesCombinationsWithNumberOfMatchesString =
-    allEmployeesCombinationsWithNumberOfMatches.join('\n')
+    allEmployeesCombinationsWithNumberOfMatchesArray.join('\n')
   return allEmployeesCombinationsWithNumberOfMatchesString
 }
 
@@ -29,6 +17,24 @@ const getEmployeesAndScheduleArrayOfStrings = (employeesAndScheduleString) => {
   return employeesAndScheduleString
     .split('\n')
     .map((employeeAndScheduleString) => employeeAndScheduleString.trim())
+}
+
+const getAllEmployeesCombinationsWithNumberOfMatches = (
+  employeesAndSchedule
+) => {
+  return employeesAndSchedule.reduce(
+    (employeePairs, employeeA, index) =>
+      employeePairs.concat(
+        employeesAndSchedule.slice(index + 1).map((employeeB) => {
+          const numberOfMatchesInThePair = getCountOfMatches(
+            employeeA.workedSchedule,
+            employeeB.workedSchedule
+          )
+          return `${employeeA.name}-${employeeB.name}: ${numberOfMatchesInThePair}`
+        })
+      ),
+    []
+  )
 }
 
 const getCountOfMatches = (
@@ -86,5 +92,7 @@ const isMatchInTimes = (dayScheduleEmployeeA, dayScheduleEmployeeB) => {
 exports.getEmployeesMatchesAtWork = getEmployeesMatchesAtWork
 exports.getEmployeesAndScheduleArrayOfStrings =
   getEmployeesAndScheduleArrayOfStrings
+exports.getAllEmployeesCombinationsWithNumberOfMatches =
+  getAllEmployeesCombinationsWithNumberOfMatches
 exports.isMatchInTimes = isMatchInTimes
 exports.getCountOfMatches = getCountOfMatches

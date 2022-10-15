@@ -3,16 +3,19 @@ const {
   getEmployeesAndScheduleArrayOfStrings,
   isMatchInTimes,
   getCountOfMatches,
+  getAllEmployeesCombinationsWithNumberOfMatches,
 } = require('./get-employees-matches-at-work')
+const Employee = require('../employee/employee-model')
 
 describe('getEmployeesMatchesAtWork', () => {
-  test('Should return ASTRID-RENE: 2 ASTRID-ANDRES: 3 RENE-ANDRES: 2', () => {
+  test('Should return RENE-ASTRID: 2 RENE-ANDRES: 3 ASTRID-ANDRES: 2', () => {
     const employeesAndScheduleString = `RENE=MO10:00-12:00,TU10:00-12:00,TH01:00-03:00,SA14:00-18:00,SU20:00-21:00
     ASTRID=MO10:00-12:00,TH12:00-14:00,SU20:00-21:00
     ANDRES=MO10:00-12:00,TH12:00-14:00,SU20:00-21:00`
 
-    expect(getEmployeesMatchesAtWork(employeesAndScheduleString))
-      .toBe(`RENE-ASTRID: 2\nRENE-ANDRES: 2\nASTRID-ANDRES: 3`)
+    expect(getEmployeesMatchesAtWork(employeesAndScheduleString)).toBe(
+      `RENE-ASTRID: 2\nRENE-ANDRES: 2\nASTRID-ANDRES: 3`
+    )
   })
 
   test('Should return RENE-ASTRID: 3', () => {
@@ -36,6 +39,21 @@ describe('getEmployeesAndScheduleArrayOfStrings', () => {
       'ASTRID=MO10:00-12:00,TH12:00-14:00,SU20:00-21:00',
       'ANDRES=MO10:00-12:00,TH12:00-14:00,SU20:00-21:00',
     ])
+  })
+})
+
+describe('getAllEmployeesCombinationsWithNumberOfMatches', () => {
+  test("Should return array ['RENE-ASTRID: 2', 'RENE-ANDRES: 2', 'ASTRID-ANDRES: 3']", () => {
+    const employeesAndSchedule = [
+      new Employee(
+        'RENE=MO10:00-12:00,TU10:00-12:00,TH01:00-03:00,SA14:00-18:00,SU20:00-21:00'
+      ),
+      new Employee('ASTRID=MO10:00-12:00,TH12:00-14:00,SU20:00-21:00'),
+      new Employee('ANDRES=MO10:00-12:00,TH12:00-14:00,SU20:00-21:00'),
+    ]
+    expect(
+      getAllEmployeesCombinationsWithNumberOfMatches(employeesAndSchedule)
+    ).toEqual(['RENE-ASTRID: 2', 'RENE-ANDRES: 2', 'ASTRID-ANDRES: 3'])
   })
 })
 
