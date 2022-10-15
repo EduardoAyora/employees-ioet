@@ -9,7 +9,7 @@ const {
 const Employee = require('../employee/employee-model')
 
 describe('getEmployeesMatchesAtWork', () => {
-  test('Should return RENE-ASTRID: 2 RENE-ANDRES: 3 ASTRID-ANDRES: 2', () => {
+  test('Should return RENE-ASTRID: 2 RENE-ANDRES: 2 ASTRID-ANDRES: 3', () => {
     const employeesAndScheduleString = `RENE=MO10:00-12:00,TU10:00-12:00,TH01:00-03:00,SA14:00-18:00,SU20:00-21:00
     ASTRID=MO10:00-12:00,TH12:00-14:00,SU20:00-21:00
     ANDRES=MO10:00-12:00,TH12:00-14:00,SU20:00-21:00`
