@@ -66,12 +66,22 @@ const isMatchInTimes = (dayScheduleEmployeeA, dayScheduleEmployeeB) => {
   const employeeBEndHour = dayScheduleEmployeeB.endHour
   const employeeBEndMinute = dayScheduleEmployeeB.endMinute
 
-  const employeeAStartTimeInMinutes =
-    employeeAStartHour * 60 + employeeAStartMinute
-  const employeeAEndTimeInMinutes = employeeAEndHour * 60 + employeeAEndMinute
-  const employeeBStartTimeInMinutes =
-    employeeBStartHour * 60 + employeeBStartMinute
-  const employeeBEndTimeInMinutes = employeeBEndHour * 60 + employeeBEndMinute
+  const employeeAStartTimeInMinutes = convertTimeOfDayToMinutes(
+    employeeAStartHour,
+    employeeAStartMinute
+  )
+  const employeeAEndTimeInMinutes = convertTimeOfDayToMinutes(
+    employeeAEndHour,
+    employeeAEndMinute
+  )
+  const employeeBStartTimeInMinutes = convertTimeOfDayToMinutes(
+    employeeBStartHour,
+    employeeBStartMinute
+  )
+  const employeeBEndTimeInMinutes = convertTimeOfDayToMinutes(
+    employeeBEndHour,
+    employeeBEndMinute
+  )
 
   if (
     employeeAStartTimeInMinutes >= employeeBStartTimeInMinutes &&
@@ -96,6 +106,10 @@ const isMatchInTimes = (dayScheduleEmployeeA, dayScheduleEmployeeB) => {
   return false
 }
 
+const convertTimeOfDayToMinutes = (hour, minutes) => {
+  return hour * 60 + minutes
+}
+
 exports.getEmployeesMatchesAtWork = getEmployeesMatchesAtWork
 exports.getEmployeesAndScheduleArrayOfStrings =
   getEmployeesAndScheduleArrayOfStrings
@@ -103,3 +117,4 @@ exports.getAllEmployeesCombinationsWithNumberOfMatches =
   getAllEmployeesCombinationsWithNumberOfMatches
 exports.isMatchInTimes = isMatchInTimes
 exports.getCountOfMatches = getCountOfMatches
+exports.convertTimeOfDayToMinutes = convertTimeOfDayToMinutes

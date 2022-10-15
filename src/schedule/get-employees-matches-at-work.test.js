@@ -4,6 +4,7 @@ const {
   isMatchInTimes,
   getCountOfMatches,
   getAllEmployeesCombinationsWithNumberOfMatches,
+  convertTimeOfDayToMinutes,
 } = require('./get-employees-matches-at-work')
 const Employee = require('../employee/employee-model')
 
@@ -292,5 +293,17 @@ describe('isMatchInTimes', () => {
         { startHour: 14, startMinute: 30, endHour: 14, endMinute: 50 }
       )
     ).toBe(false)
+  })
+})
+
+describe('convertTimeOfDayToMinutes', () => {
+  test('Should return 40', () => {
+    expect(convertTimeOfDayToMinutes(0, 40)).toBe(40)
+  })
+  test('Should return 640', () => {
+    expect(convertTimeOfDayToMinutes(10, 40)).toBe(640)
+  })
+  test('Should return 940', () => {
+    expect(convertTimeOfDayToMinutes(15, 40)).toBe(940)
   })
 })
