@@ -1,6 +1,6 @@
-import { readFileSync } from 'fs'
+const fs = require('fs')
+const { readFileSync } = fs
 
 const path = 'data.txt'
 
-const employeesAndSchedule = readFileSync(path, 'utf8')
-console.log(employeesAndSchedule)
+const employeesAndScheduleString = readFileSync(path, 'utf8')
