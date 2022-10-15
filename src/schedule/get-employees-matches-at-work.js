@@ -66,28 +66,31 @@ const isMatchInTimes = (dayScheduleEmployeeA, dayScheduleEmployeeB) => {
   const employeeBEndHour = dayScheduleEmployeeB.endHour
   const employeeBEndMinute = dayScheduleEmployeeB.endMinute
 
+  const employeeAStartTimeInMinutes =
+    employeeAStartHour * 60 + employeeAStartMinute
+  const employeeAEndTimeInMinutes = employeeAEndHour * 60 + employeeAEndMinute
+  const employeeBStartTimeInMinutes =
+    employeeBStartHour * 60 + employeeBStartMinute
+  const employeeBEndTimeInMinutes = employeeBEndHour * 60 + employeeBEndMinute
+
   if (
-    employeeAStartHour >= employeeBStartHour &&
-    employeeAStartHour <= employeeBEndHour &&
-    employeeAStartMinute >= employeeBStartMinute
+    employeeAStartTimeInMinutes >= employeeBStartTimeInMinutes &&
+    employeeAStartTimeInMinutes <= employeeBEndTimeInMinutes
   )
     return true
   if (
-    employeeAEndHour >= employeeBStartHour &&
-    employeeAEndHour <= employeeBEndHour &&
-    employeeAEndMinute <= employeeBEndMinute
+    employeeAEndTimeInMinutes >= employeeBStartTimeInMinutes &&
+    employeeAEndTimeInMinutes <= employeeBEndTimeInMinutes
   )
     return true
   if (
-    employeeBStartHour >= employeeAStartHour &&
-    employeeBStartHour <= employeeAEndHour &&
-    employeeBStartMinute >= employeeAStartMinute
+    employeeBStartTimeInMinutes >= employeeAStartTimeInMinutes &&
+    employeeBStartTimeInMinutes <= employeeAEndTimeInMinutes
   )
     return true
   if (
-    employeeBEndHour >= employeeAStartHour &&
-    employeeBEndHour <= employeeAEndHour &&
-    employeeBEndMinute <= employeeAEndMinute
+    employeeBEndTimeInMinutes >= employeeAStartTimeInMinutes &&
+    employeeBEndTimeInMinutes <= employeeAEndTimeInMinutes
   )
     return true
   return false
