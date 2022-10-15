@@ -27,6 +27,15 @@ describe('getEmployeesMatchesAtWork', () => {
       `RENE-ASTRID: 3`
     )
   })
+
+  test('Should return JOSE-MALENA: 1', () => {
+    const employeesAndScheduleString = `JOSE=SA01:10-01:30,SU02:00-02:10
+    MALENA=SA01:20-01:40,SU02:30-02:40`
+
+    expect(getEmployeesMatchesAtWork(employeesAndScheduleString)).toBe(
+      `JOSE-MALENA: 1`
+    )
+  })
 })
 
 describe('getEmployeesAndScheduleArrayOfStrings', () => {
