@@ -277,4 +277,20 @@ describe('isMatchInTimes', () => {
       )
     ).toBe(true)
   })
+  test('Should return true', () => {
+    expect(
+      isMatchInTimes(
+        { startHour: 14, startMinute: 20, endHour: 14, endMinute: 50 },
+        { startHour: 14, startMinute: 10, endHour: 14, endMinute: 30 }
+      )
+    ).toBe(true)
+  })
+  test('Should return false', () => {
+    expect(
+      isMatchInTimes(
+        { startHour: 14, startMinute: 10, endHour: 14, endMinute: 20 },
+        { startHour: 14, startMinute: 30, endHour: 14, endMinute: 50 }
+      )
+    ).toBe(false)
+  })
 })
